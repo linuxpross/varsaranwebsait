@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт Аргишти</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Подключение стилей -->
+    <style>
+        /* Стили для шапки */
+        header {
+            background-color: #007bff; /* Синий цвет */
+            color: white; /* Белый текст */
+            padding: 20px;
+        }
+
+        /* Стили для контейнера */
+        .container {
+            padding: 20px;
+        }
+
+        /* Стили для карточек */
+        .card {
+            margin-bottom: 20px;
+            border: 1px solid #007bff; /* Синий цвет рамки */
+        }
+
+        .card-title {
+            color: #007bff; /* Синий цвет текста заголовка */
+        }
+
+        /* Стили для кнопки */
+        button[type="submit"] {
+            background-color: #007bff; /* Синий цвет фона */
+            color: white; /* Белый текст */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease; /* Анимация изменения цвета фона */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Темно-синий цвет при наведении */
+        }
+
+        /* Стили для кнопки скрытия/отображения комментариев */
+        .toggle-comments-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Стили для скрытых комментариев */
+        .comments-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="text-center">
+            <h1>առողջ կյանքի</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        {% for post in posts %}
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
+                <p class="card-text">Опубликовано: {{ post.published_date }}</p>
+                <p class="card-text">{{ post.text|linebreaks }}</p>
+                <img src="{{ post.img.url }}" class="img-fluid" alt="Изображение">
+            </div>
+        </div>
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <div class="comments-container">
+            {% if post.comments.all %}
+                <h2>Комментарии:</h2>
+                {% for comment in post.comments.all %}
+                    <div class="comment">
+                        <p>Автор: {{ comment.author }}</p>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button class="toggle-comments-btn">Показать комментарии</button>
+        <h2>Добавить комментарий</h2>
+        <form method="POST" action="{% url 'add_comment_to_post' post.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+        {% endfor %}
+    </div>
+
+    <!-- Подключение Bootstrap JS (необязательно) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript для скрытия/отображения комментариев -->
+    <script>
+        $(document).ready(function() {
+            $('.toggle-comments-btn').click(function() {
+                $(this).prev('.comments-container').toggle();
+            });
+        });
+    </script>
+</body>
+</html>
