@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zysc(&b0us5m320kf8x&*8(1!hn$-lk#+t)6_o-ug_++h61i@9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-PORT = 8000 
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
